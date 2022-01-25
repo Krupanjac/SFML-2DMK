@@ -12,6 +12,7 @@ Inspired by Mortal Kombat.
 4. Osnovna logika renderovanja prozora ✓
 5. Napredna logika renderovanja prozora, spriteovi i animacije 𐄂
 6. Iskoriscenost memorije i optimizacija koda ~42% - 60%
+ 
 **7. Dodati dodatne protokole i zadatke nakon izvrsenja izlistanih.**
 
 
