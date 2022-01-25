@@ -18,3 +18,13 @@ Inspired by Mortal Kombat.
 **Protokoli:**
 1. Dodati naknadno.
 
+
+
+**!!!BITNO!!!**
+
+Testirano na Linux kernelu, info:
+
+Distributor ID:	Debian
+Description:	Debian GNU/Linux 11 (bullseye)
+Release:	11
+Codename:	bullseye
