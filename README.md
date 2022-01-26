@@ -8,7 +8,7 @@ Inspired by Mortal Kombat.
 
 1. Povezivanje lib sa IDE ✓
 2. Osnovna logika funkcionalnosti kretanja ✓
-3. Napredna logika funkcionalnosti kretanja (dodati naprednije fizicke atribute) 𐄂
+3. Napredna logika funkcionalnosti kretanja (dodati naprednije fizicke atribute) (~30% zavrseno) 𐄂
 4. Osnovna logika renderovanja prozora ✓
 5. Napredna logika renderovanja prozora, spriteovi i animacije 𐄂
 6. Iskoriscenost memorije i optimizacija koda ~42% - 60%
