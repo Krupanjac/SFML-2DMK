@@ -16,6 +16,8 @@ namespace P{
         //pomeranje
         void pl_set_pos(int);
         void pl_update_pos(int);
+        void gravity();
+
         RectangleShape pl_render_update(RectangleShape);
 
 
@@ -31,6 +33,9 @@ namespace P{
         bool LEFT;
         bool RIGHT;
         
+        double gr_acc;
+
+        bool flag = false;
 
         
 

@@ -10,7 +10,7 @@ using namespace P;
 int main(){
     RectangleShape rect;
 
-    Player igrac(150,200);
+    Player igrac(100,200);
     decl(1024,768);
     rect = igrac.pl_render();
 
@@ -45,6 +45,10 @@ while (window.pollEvent(event))
                 if (event.key.code == Keyboard::D)
             {
                 igrac.pl_set_pos(4);
+            }
+            if (event.key.code == Keyboard::Space)
+            {
+            igrac.pl_set_pos(1);
             }    
     }
 
@@ -67,7 +71,11 @@ while (window.pollEvent(event))
                 if (event.key.code == Keyboard::D)
             {
                 igrac.pl_update_pos(4);
-            }    
+            }
+            if (event.key.code == Keyboard::Space)
+        {
+            igrac.pl_update_pos(1);
+        }    
     }  
 
 
@@ -79,11 +87,11 @@ while (window.pollEvent(event))
 
 }
 
+        igrac.gravity();
         rect = igrac.pl_render_update(rect);
         window.clear();
         window.draw(rect);
         window.display();
     }
 
-    return 0;
 }

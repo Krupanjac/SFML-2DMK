@@ -1,6 +1,7 @@
 #include "igrac.h"
 #include "global.h"
 #include <iostream>
+#include <cmath>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
@@ -17,16 +18,24 @@ UP = false;
 DOWN = false;
 LEFT = false;
 RIGHT = false;
+gr_acc = 0.05;
+
 }
 
 RectangleShape Player::pl_render_update(RectangleShape r){
- if(UP && (pos_y>0)) pos_y-=pl_speed;
- if(DOWN &&(pos_y<scr_height-pl_height)) pos_y+=pl_speed;
+
+ if(UP && (pos_y>0) &&(scr_height/pos_y)<=2 && !flag){
+      pos_y-=pl_height/1.5;
+      flag = true;
+ }
+ if(DOWN &&(pos_y<scr_height-pl_height)){
+    cout<<"test";
+    }
  if(LEFT && (pos_x>0)) pos_x-=pl_speed;
  if(RIGHT&&(pos_x<scr_width-pl_width)) pos_x+=pl_speed;
  
 r.setPosition(pos_x, pos_y);
-cout<<pos_x<<" "<<pos_y<<endl;
+cout<<pos_x<<" "<<pos_y<<" "<<scr_height-pl_height<<endl;
 return r;
 
 }
@@ -74,6 +83,8 @@ switch(izb){
 
 case 1:
 UP = false;
+if(pos_y-scr_height-pl_height<2)
+flag = false;
 break;
 
 case 2:
@@ -96,3 +107,12 @@ break;
 
 }
 
+
+void Player::gravity(){
+    if(pos_y<scr_height-pl_height){
+        pos_y+= gr_acc;
+
+       if(pos_x<scr_width-pl_width) pos_x+=gr_acc/30;
+    }
+
+}

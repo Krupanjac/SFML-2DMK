@@ -2,7 +2,7 @@
 
 int scr_width;
 int scr_height;
-double pl_speed = 0.1;
+double pl_speed = 0.09;
 
 void decl(int w,int h){
 
