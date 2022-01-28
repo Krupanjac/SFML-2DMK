@@ -22,20 +22,24 @@ namespace P{
 
 
         private:
+        //Sirina i visina igraca
         double pl_width;
         double pl_height;
-
+        //Pozicija u odnosu na prozor
         double pos_x;
         double pos_y;
-
+        //Smer kretanja
         bool UP;
         bool DOWN;
         bool LEFT;
         bool RIGHT;
         
+        //Gravitacija
         double gr_acc;
+        double pl_speed;
 
-        bool flag = false;
+        
+        bool flag = true;
 
         
 

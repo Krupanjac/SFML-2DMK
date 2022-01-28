@@ -52,7 +52,6 @@ while (window.pollEvent(event))
             }    
     }
 
-
     if (event.type == Event::KeyReleased){
                 if (event.key.code == Keyboard::W)
         {
@@ -86,9 +85,9 @@ while (window.pollEvent(event))
                 window.close();
 
 }
-
+         rect = igrac.pl_render_update(rect);
         igrac.gravity();
-        rect = igrac.pl_render_update(rect);
+        
         window.clear();
         window.draw(rect);
         window.display();

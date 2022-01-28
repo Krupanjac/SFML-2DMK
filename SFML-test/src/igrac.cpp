@@ -19,14 +19,19 @@ DOWN = false;
 LEFT = false;
 RIGHT = false;
 gr_acc = 0.05;
+pl_speed = 0.09;
 
 }
 
 RectangleShape Player::pl_render_update(RectangleShape r){
 
- if(UP && (pos_y>0) &&(scr_height/pos_y)<=2 && !flag){
+ if(UP && flag &&(pos_y>scr_height-pl_height)){
+     // Resiti ovaj deo!!!
+     if(((scr_height-pl_height)-pos_y)<=1) flag = true;
+     else flag = false;
       pos_y-=pl_height/1.5;
-      flag = true;
+     
+
  }
  if(DOWN &&(pos_y<scr_height-pl_height)){
     cout<<"test";
@@ -35,7 +40,7 @@ RectangleShape Player::pl_render_update(RectangleShape r){
  if(RIGHT&&(pos_x<scr_width-pl_width)) pos_x+=pl_speed;
  
 r.setPosition(pos_x, pos_y);
-cout<<pos_x<<" "<<pos_y<<" "<<scr_height-pl_height<<endl;
+//cout<<pos_x<<" "<<pos_y<<" "<<scr_height-pl_height<<endl;
 return r;
 
 }
@@ -55,21 +60,34 @@ void Player::pl_set_pos(int izbor){
 
 case 1:
 UP = true;
+//if (UP)UP = false;
+
+//else UP = true;
+
 break;
 
 case 2:
 DOWN = true;
+/*if (DOWN)DOWN = false;
+
+else DOWN = true;*/
 break;
 
 case 3:
 LEFT = true;
+/*if (LEFT)LEFT = false;
+else LEFT = true;*/
 break;
 
 case 4:
+/*if (RIGHT)RIGHT = false;
+
+else RIGHT = true;*/
 RIGHT = true;
 break;
 
 default:
+
 
 break;
 
@@ -83,8 +101,8 @@ switch(izb){
 
 case 1:
 UP = false;
-if(pos_y-scr_height-pl_height<2)
-flag = false;
+//if(((scr_height-pl_height)-pos_y)<=1) flag = true;
+//cout<<pos_y<<" "<<scr_height-pl_height<<" "<<pos_y-(scr_height-pl_height)<<endl;
 break;
 
 case 2:
@@ -112,7 +130,7 @@ void Player::gravity(){
     if(pos_y<scr_height-pl_height){
         pos_y+= gr_acc;
 
-       if(pos_x<scr_width-pl_width) pos_x+=gr_acc/30;
+       //if(pos_x<scr_width-pl_width) pos_x+=gr_acc/30;
     }
 
 }
