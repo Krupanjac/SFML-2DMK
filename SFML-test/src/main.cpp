@@ -8,10 +8,12 @@ using namespace std;
 using namespace P;
 
 int main(){
-    RectangleShape rect;
+    pressed = 0;
 
-    Player igrac(100,200);
+    RectangleShape rect;
     decl(1024,768);
+    Player igrac(100,200);
+    
     rect = igrac.pl_render();
 
     //aa
@@ -20,8 +22,9 @@ int main(){
 
     //stvaranje glavnog prozora
     RenderWindow window(VideoMode(scr_width, scr_height), "Ratko Mladic Kombat!");
-
+    
     //glavna petlja
+    window.setKeyRepeatEnabled(false);
     while (window.isOpen()){
         //hvatac desavanja
         Event event;
@@ -30,7 +33,11 @@ while (window.pollEvent(event))
     if (event.type == Event::KeyPressed){
                 if (event.key.code == Keyboard::W)
         {
+
+            
             igrac.pl_set_pos(1);
+           
+
         }
 
             if (event.key.code == Keyboard::S)
@@ -48,13 +55,17 @@ while (window.pollEvent(event))
             }
             if (event.key.code == Keyboard::Space)
             {
+            
             igrac.pl_set_pos(1);
+            pressed++;
+            //printf("%d pressed\n",pressed);
             }    
     }
 
     if (event.type == Event::KeyReleased){
                 if (event.key.code == Keyboard::W)
         {
+            //isPressed = false;
             igrac.pl_update_pos(1);
         }
 
@@ -73,6 +84,7 @@ while (window.pollEvent(event))
             }
             if (event.key.code == Keyboard::Space)
         {
+            pressed = 0;
             igrac.pl_update_pos(1);
         }    
     }  
@@ -85,7 +97,8 @@ while (window.pollEvent(event))
                 window.close();
 
 }
-         rect = igrac.pl_render_update(rect);
+
+        rect = igrac.pl_render_update(rect);
         igrac.gravity();
         
         window.clear();

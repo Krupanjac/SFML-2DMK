@@ -12,35 +12,38 @@ using namespace std;
 Player::Player(double width, double height){
 pl_width = width;
 pl_height = height;
-pos_x = 200;
-pos_y = 400;
+pos_x = 0;
+pos_y = scr_height-pl_height;
 UP = false;
 DOWN = false;
 LEFT = false;
 RIGHT = false;
-gr_acc = 0.05;
+gr_acc = 0;
 pl_speed = 0.09;
+pi = 3.14;
+
+LEFT_TRIGGER = false;
+RIGHT_TRIGGER = false;
+FIRST_PASS = true;
 
 }
 
 RectangleShape Player::pl_render_update(RectangleShape r){
-
- if(UP && flag &&(pos_y>scr_height-pl_height)){
+cout<<pos_y<<" "<<scr_height-pl_height<<endl;
+ if(UP &&(pos_y>scr_height-pl_height)&& (pos_x>0)&&(pos_x<scr_width-pl_width)){
      // Resiti ovaj deo!!!
-     if(((scr_height-pl_height)-pos_y)<=1) flag = true;
-     else flag = false;
-      pos_y-=pl_height/1.5;
+      pos_y-=pl_height/1.2;
      
 
  }
  if(DOWN &&(pos_y<scr_height-pl_height)){
-    cout<<"test";
+    
     }
  if(LEFT && (pos_x>0)) pos_x-=pl_speed;
  if(RIGHT&&(pos_x<scr_width-pl_width)) pos_x+=pl_speed;
  
 r.setPosition(pos_x, pos_y);
-//cout<<pos_x<<" "<<pos_y<<" "<<scr_height-pl_height<<endl;
+
 return r;
 
 }
@@ -74,6 +77,9 @@ else DOWN = true;*/
 break;
 
 case 3:
+gr_acc = 0;
+LEFT_TRIGGER = true;
+RIGHT_TRIGGER = false;
 LEFT = true;
 /*if (LEFT)LEFT = false;
 else LEFT = true;*/
@@ -83,6 +89,9 @@ case 4:
 /*if (RIGHT)RIGHT = false;
 
 else RIGHT = true;*/
+gr_acc = 0;
+RIGHT_TRIGGER = true;
+LEFT_TRIGGER = false;
 RIGHT = true;
 break;
 
@@ -110,11 +119,17 @@ DOWN = false;
 break;
 
 case 3:
+//LEFT_TRIGGER = false;
 LEFT = false;
+if(pos_y<=scr_height-pl_height)
+//LEFT_TRIGGER = false;
 break;
 
 case 4:
+//RIGHT_TRIGGER = false;
 RIGHT = false;
+if(pos_y<=scr_height-pl_height)
+//RIGHT_TRIGGER = false;
 break;
 
 default:
@@ -127,10 +142,51 @@ break;
 
 
 void Player::gravity(){
-    if(pos_y<scr_height-pl_height){
-        pos_y+= gr_acc;
-
+  // Y IDE OD 0 DO 1 A X JE SIN
+  if(RIGHT_TRIGGER){
+    LEFT_TRIGGER = false;
+    //cout<<pos_y<<" "<<scr_height-pl_height<<endl;
+    if(pos_y<=scr_height-pl_height){
+      printf("%f, %f\n",gr_acc,pi);
+      if(gr_acc<=pi/2)
+        pos_y+= sin(gr_acc)/2;
+        else
+        pos_y-=sin(gr_acc)/2;
+        if(pos_x<scr_width-pl_width)
+        pos_x += gr_acc;
+        gr_acc+=0.0001;
+        
+        if(gr_acc>=pi)
+         gr_acc=0;
+        //RIGHT_TRIGGER = false;   
        //if(pos_x<scr_width-pl_width) pos_x+=gr_acc/30;
     }
+   
+  }
+
+  else if(LEFT_TRIGGER){
+    RIGHT_TRIGGER = false;
+    //cout<<pos_y<<" "<<scr_height-pl_height<<endl;
+    if(pos_y<=scr_height-pl_height){
+      printf("%f, %f\n",gr_acc,pi);
+      if(gr_acc<=pi/2)
+        pos_y+= sin(gr_acc)/2;
+        else
+        pos_y-=sin(gr_acc)/2;
+        if(pos_x>0)
+        pos_x -= gr_acc;
+        gr_acc+=0.0001;
+        
+        if(gr_acc>=pi)
+         gr_acc=0;
+        //RIGHT_TRIGGER = false;   
+       //if(pos_x<scr_width-pl_width) pos_x+=gr_acc/30;
+    }
+   
+  }
+  else if(!LEFT_TRIGGER && !RIGHT_TRIGGER){
+
+  }
+  
 
 }

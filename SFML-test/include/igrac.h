@@ -33,6 +33,10 @@ namespace P{
         bool DOWN;
         bool LEFT;
         bool RIGHT;
+
+        bool LEFT_TRIGGER;
+        bool RIGHT_TRIGGER;
+        bool FIRST_PASS;
         
         //Gravitacija
         double gr_acc;
