@@ -11,10 +11,14 @@ int main(){
     pressed = 0;
 
     RectangleShape rect;
+    RectangleShape rect2;
     decl(1024,768);
-    Player igrac(100,200);
+    Player igrac(pl_def_width,pl_def_height);
+    Player igrac2(pl_def_width,pl_def_height);
+    igrac2.change_pl_y();
     
     rect = igrac.pl_render();
+    rect2 = igrac2.pl_render();
 
     //aa
    ContextSettings settings;
@@ -24,7 +28,7 @@ int main(){
     RenderWindow window(VideoMode(scr_width, scr_height), "Ratko Mladic Kombat!");
     
     //glavna petlja
-    window.setKeyRepeatEnabled(false);
+    //window.setKeyRepeatEnabled(false);
     while (window.isOpen()){
         //hvatac desavanja
         Event event;
@@ -33,16 +37,14 @@ while (window.pollEvent(event))
     if (event.type == Event::KeyPressed){
                 if (event.key.code == Keyboard::W)
         {
-
-            
             igrac.pl_set_pos(1);
-           
 
         }
 
             if (event.key.code == Keyboard::S)
             {
                 igrac.pl_set_pos(2);
+                rect = igrac.pl_render_update(rect,igrac2);
             }
                 if (event.key.code == Keyboard::A)
             {
@@ -57,7 +59,7 @@ while (window.pollEvent(event))
             {
             
             igrac.pl_set_pos(1);
-            pressed++;
+            
             //printf("%d pressed\n",pressed);
             }    
     }
@@ -72,6 +74,8 @@ while (window.pollEvent(event))
             if (event.key.code == Keyboard::S)
             {
                 igrac.pl_update_pos(2);
+                rect=igrac.update_size(rect);
+                
             }
                 if (event.key.code == Keyboard::A)
             {
@@ -81,10 +85,11 @@ while (window.pollEvent(event))
                 if (event.key.code == Keyboard::D)
             {
                 igrac.pl_update_pos(4);
+                
             }
             if (event.key.code == Keyboard::Space)
         {
-            pressed = 0;
+           
             igrac.pl_update_pos(1);
         }    
     }  
@@ -98,11 +103,11 @@ while (window.pollEvent(event))
 
 }
 
-        rect = igrac.pl_render_update(rect);
+        rect = igrac.pl_render_update(rect,igrac2);
         igrac.gravity();
-        
         window.clear();
         window.draw(rect);
+        window.draw(rect2);
         window.display();
     }
 

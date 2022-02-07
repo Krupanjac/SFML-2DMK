@@ -28,19 +28,51 @@ FIRST_PASS = true;
 
 }
 
-RectangleShape Player::pl_render_update(RectangleShape r){
-cout<<pos_y<<" "<<scr_height-pl_height<<endl;
+bool Player::collision(Player igrac){
+  printf("%f,%f\n",this->pos_x+this->pl_width, igrac.pos_x+igrac.pl_width);
+  if(this->pos_x+this->pl_width-igrac.pos_x+igrac.pl_width<pl_width/2 && this->pos_x+this->pl_width-igrac.pos_x+igrac.pl_width>pl_width/2.22){
+    return true;
+  }
+  else
+  return false;
+
+}
+
+void Player::change_pl_y(){
+  pos_x=scr_width-pl_width-50;
+}
+
+
+RectangleShape Player::update_size(RectangleShape r){
+  pl_height = duck();
+  r.setSize(Vector2f(pl_width,pl_height));
+  //printf("%f,%f,%d\n",pos_y,pl_height,pl_def_height);
+  //if(pl_height<pl_def_height)
+  pos_y-=pl_height/2;
+  return r;
+
+}
+
+
+
+int Player::duck(){
+
+return pl_def_height;
+
+}
+//COLLISION PROBLEM POPRAVITI!!!
+RectangleShape Player::pl_render_update(RectangleShape r,Player igrac){
+//cout<<pos_y<<" "<<scr_height-pl_height<<endl;
  if(UP &&(pos_y>scr_height-pl_height)&& (pos_x>0)&&(pos_x<scr_width-pl_width)){
      // Resiti ovaj deo!!!
-      pos_y-=pl_height/1.2;
-     
-
+      pos_y-=pl_height/1.1;
  }
- if(DOWN &&(pos_y<scr_height-pl_height)){
-    
+ if(DOWN &&(floor(pos_y)==floor(scr_height-pl_height))){
+   pl_height=pl_def_height/2;
+   r.setSize(Vector2f(pl_width,pl_height));
     }
- if(LEFT && (pos_x>0)) pos_x-=pl_speed;
- if(RIGHT&&(pos_x<scr_width-pl_width)) pos_x+=pl_speed;
+ if(LEFT && (pos_x>0) && !collision(igrac)) pos_x-=pl_speed;
+ if(RIGHT&&(pos_x<scr_width-pl_width)&& !collision(igrac)) pos_x+=pl_speed;
  
 r.setPosition(pos_x, pos_y);
 
@@ -115,20 +147,21 @@ UP = false;
 break;
 
 case 2:
+
 DOWN = false;
 break;
 
 case 3:
 //LEFT_TRIGGER = false;
 LEFT = false;
-if(pos_y<=scr_height-pl_height)
+//if(pos_y<=scr_height-pl_height)
 //LEFT_TRIGGER = false;
 break;
 
 case 4:
 //RIGHT_TRIGGER = false;
 RIGHT = false;
-if(pos_y<=scr_height-pl_height)
+//if(pos_y<=scr_height-pl_height)
 //RIGHT_TRIGGER = false;
 break;
 
@@ -147,7 +180,7 @@ void Player::gravity(){
     LEFT_TRIGGER = false;
     //cout<<pos_y<<" "<<scr_height-pl_height<<endl;
     if(pos_y<=scr_height-pl_height){
-      printf("%f, %f\n",gr_acc,pi);
+      //printf("%f, %f\n",gr_acc,pi);
       if(gr_acc<=pi/2)
         pos_y+= sin(gr_acc)/2;
         else
@@ -168,7 +201,7 @@ void Player::gravity(){
     RIGHT_TRIGGER = false;
     //cout<<pos_y<<" "<<scr_height-pl_height<<endl;
     if(pos_y<=scr_height-pl_height){
-      printf("%f, %f\n",gr_acc,pi);
+      //printf("%f, %f\n",gr_acc,pi);
       if(gr_acc<=pi/2)
         pos_y+= sin(gr_acc)/2;
         else

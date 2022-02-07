@@ -17,8 +17,12 @@ namespace P{
         void pl_set_pos(int);
         void pl_update_pos(int);
         void gravity();
+        int duck();
+        void change_pl_y();
+        bool collision(Player);
+        RectangleShape update_size(RectangleShape);
 
-        RectangleShape pl_render_update(RectangleShape);
+        RectangleShape pl_render_update(RectangleShape,Player);
 
 
         private:
