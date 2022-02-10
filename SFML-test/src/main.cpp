@@ -10,15 +10,27 @@ using namespace P;
 int main(){
     pressed = 0;
 
-    RectangleShape rect;
-    RectangleShape rect2;
+    Sprite pl1;
+    Sprite pl2;
+    Texture txt;
     decl(1024,768);
     Player igrac(pl_def_width,pl_def_height);
     Player igrac2(pl_def_width,pl_def_height);
+
+    
+
+    txt.loadFromFile("res/4.png");
+    txt.setSmooth(true);
+    //test.setTexture(txt);
+    //test.setTextureRect(IntRect(10,10,100,200));
+
+
+
     igrac2.change_pl_y();
     
-    rect = igrac.pl_render();
-    rect2 = igrac2.pl_render();
+    pl1 = igrac.pl_render(&txt);
+    pl2 = igrac2.pl_render(&txt);
+
 
     //aa
    ContextSettings settings;
@@ -44,7 +56,7 @@ while (window.pollEvent(event))
             if (event.key.code == Keyboard::S)
             {
                 igrac.pl_set_pos(2);
-                rect = igrac.pl_render_update(rect,igrac2);
+                pl1 = igrac.pl_render_update(pl1,igrac2);
             }
                 if (event.key.code == Keyboard::A)
             {
@@ -74,7 +86,7 @@ while (window.pollEvent(event))
             if (event.key.code == Keyboard::S)
             {
                 igrac.pl_update_pos(2);
-                rect=igrac.update_size(rect);
+                //rect=igrac.update_size(rect);
                 
             }
                 if (event.key.code == Keyboard::A)
@@ -103,11 +115,11 @@ while (window.pollEvent(event))
 
 }
 
-        rect = igrac.pl_render_update(rect,igrac2);
+        pl1 = igrac.pl_render_update(pl1,igrac2);
         igrac.gravity();
         window.clear();
-        window.draw(rect);
-        window.draw(rect2);
+        window.draw(pl1);
+        window.draw(pl2);
         window.display();
     }
 

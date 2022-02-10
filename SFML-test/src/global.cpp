@@ -3,8 +3,8 @@
 int scr_width;
 int scr_height;
 
-double pl_def_height = 200;
-double pl_def_width = 100;
+double pl_def_height = 100;
+double pl_def_width = 50;
 
 bool isPressed = false;
 double pi = 3.14;

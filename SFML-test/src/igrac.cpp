@@ -1,5 +1,6 @@
 #include "igrac.h"
 #include "global.h"
+#include "Collision.hpp"
 #include <iostream>
 #include <cmath>
 #include <SFML/Window.hpp>
@@ -26,6 +27,23 @@ LEFT_TRIGGER = false;
 RIGHT_TRIGGER = false;
 FIRST_PASS = true;
 
+}
+
+void Player::update_pl_width(){
+  this->pl_width*=2;
+}
+void Player::update_pl_height(){
+  this->pl_height*=2;
+   this->pos_y = scr_height-pl_height;
+}
+
+
+int Player::get_pl_width(){
+  return pl_width;
+}
+
+int Player::get_pl_height(){
+  return pl_height;
 }
 
 bool Player::collision(Player igrac){
@@ -61,7 +79,7 @@ return pl_def_height;
 
 }
 //COLLISION PROBLEM POPRAVITI!!!
-RectangleShape Player::pl_render_update(RectangleShape r,Player igrac){
+Sprite Player::pl_render_update(Sprite r,Player igrac){
 //cout<<pos_y<<" "<<scr_height-pl_height<<endl;
  if(UP &&(pos_y>scr_height-pl_height)&& (pos_x>0)&&(pos_x<scr_width-pl_width)){
      // Resiti ovaj deo!!!
@@ -69,10 +87,10 @@ RectangleShape Player::pl_render_update(RectangleShape r,Player igrac){
  }
  if(DOWN &&(floor(pos_y)==floor(scr_height-pl_height))){
    pl_height=pl_def_height/2;
-   r.setSize(Vector2f(pl_width,pl_height));
+   //r.setSize(Vector2f(pl_width,pl_height));
     }
- if(LEFT && (pos_x>0) && !collision(igrac)) pos_x-=pl_speed;
- if(RIGHT&&(pos_x<scr_width-pl_width)&& !collision(igrac)) pos_x+=pl_speed;
+ if(LEFT && (pos_x>0)) pos_x-=pl_speed;
+ if(RIGHT&&(pos_x<scr_width-pl_width)) pos_x+=pl_speed;
  
 r.setPosition(pos_x, pos_y);
 
@@ -80,13 +98,21 @@ return r;
 
 }
 
+Sprite Player::pl_render_reload(Sprite *igr){
+  igr->setPosition(pos_x,pos_y);
 
+}
 
-RectangleShape Player::pl_render(){
-    RectangleShape rect(Vector2f(pl_width, pl_height));
-    rect.setPosition(pos_x,pos_y);
-    rect.setFillColor(Color::Green);
-    return rect;
+Sprite Player::pl_render(Texture *txt){
+    Sprite igr;
+    igr.setTexture(*txt);
+    igr.setTextureRect(IntRect(1,3,pl_width,pl_height));
+    igr.setScale(2,2);
+    update_pl_width();
+    update_pl_height();
+    igr.setPosition(pos_x,pos_y);
+    return igr;
+
 }
 
 void Player::pl_set_pos(int izbor){
