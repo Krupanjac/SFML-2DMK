@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include "Collision.hpp"
 #include "global.h"
 #include "igrac.h"
 
@@ -114,6 +115,9 @@ while (window.pollEvent(event))
                 window.close();
 
 }
+    if(Collision::PixelPerfectTest(pl1,pl2)){
+        cout<<"collision\n";
+    }
 
         pl1 = igrac.pl_render_update(pl1,igrac2);
         igrac.gravity();
