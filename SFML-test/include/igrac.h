@@ -10,16 +10,24 @@ namespace P{
     class Player{
 
         public:
+        Sprite pl_model;
+        void update_pl_model(Sprite);
+
+
         void update_pl_width();
         void update_pl_height();
 
         int get_pl_width();
         int get_pl_height();
+        int get_pl_position_x();
+        int get_pl_position_y();
 
-        Player(double, double);
+        void pl_direction_render(Player*);
+
+        Player(double, double, Texture*);
 
 
-        Sprite pl_render_reload(Sprite *);
+        void pl_render_reload();
         Sprite pl_render(Texture*);
         //pomeranje
         void pl_set_pos(int);
@@ -55,12 +63,8 @@ namespace P{
         double pl_speed;
 
         
-        bool flag = true;
-
         
-
-
-
+        bool flag = true;
 
 
     };

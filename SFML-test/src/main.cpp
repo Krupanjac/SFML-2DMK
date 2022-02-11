@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include "pl_animation.h"
 #include "Collision.hpp"
 #include "global.h"
 #include "igrac.h"
@@ -8,29 +9,40 @@ using namespace sf;
 using namespace std;
 using namespace P;
 
+
+
+
+
+
 int main(){
+    int brojac = 0;
     pressed = 0;
 
-    Sprite pl1;
-    Sprite pl2;
     Texture txt;
-    decl(1024,768);
-    Player igrac(pl_def_width,pl_def_height);
-    Player igrac2(pl_def_width,pl_def_height);
+    txt.loadFromFile("res/4.png");
 
     
+    //sprites.loadTextures(txt,)
+   
+    decl(1024,768);
+    
+    Player igrac(pl_def_width,pl_def_height,&txt);
+    Player igrac2(pl_def_width,pl_def_height,&txt);
+    Animate sprites;
+     igrac2.change_pl_y();
+     igrac2.pl_render_reload();
 
-    txt.loadFromFile("res/4.png");
-    txt.setSmooth(true);
+    sprites.load_texture();
+    
     //test.setTexture(txt);
     //test.setTextureRect(IntRect(10,10,100,200));
 
 
 
-    igrac2.change_pl_y();
+   
     
-    pl1 = igrac.pl_render(&txt);
-    pl2 = igrac2.pl_render(&txt);
+    //igrac.pl_model = igrac.pl_render(&txt);
+    //igrac2.pl_model = igrac2.pl_render(&txt);
 
 
     //aa
@@ -57,7 +69,7 @@ while (window.pollEvent(event))
             if (event.key.code == Keyboard::S)
             {
                 igrac.pl_set_pos(2);
-                pl1 = igrac.pl_render_update(pl1,igrac2);
+                igrac.pl_model = igrac.pl_render_update(igrac.pl_model,igrac2);
             }
                 if (event.key.code == Keyboard::A)
             {
@@ -115,16 +127,19 @@ while (window.pollEvent(event))
                 window.close();
 
 }
-    if(Collision::PixelPerfectTest(pl1,pl2)){
+    if(Collision::PixelPerfectTest(igrac.pl_model,igrac2.pl_model)){
         cout<<"collision\n";
     }
 
-        pl1 = igrac.pl_render_update(pl1,igrac2);
+        igrac.pl_model = igrac.pl_render_update(igrac.pl_model,igrac2);
+        igrac.pl_direction_render(&igrac2);
         igrac.gravity();
+        igrac.update_pl_model(sprites.get_sprite(brojac));
         window.clear();
-        window.draw(pl1);
-        window.draw(pl2);
+        window.draw(igrac.pl_model);
+        window.draw(igrac2.pl_model);
         window.display();
+        brojac++;
     }
 
 }
