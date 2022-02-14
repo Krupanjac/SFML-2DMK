@@ -4,29 +4,25 @@
 #include "global.h"
 #include "igrac.h"
 
+using namespace P;
 
-
-class Animate : public Player
+class Animate
 {
 
 public:
-void load_texture();
-Animate(double w, double h, Texture *txt);
+void load_texture(Player*);
 Sprite get_sprite(int);
 
-
+Animate();
 
 
 private:
-        double pl_width;
-        double pl_height;
 
-        double pos_x;
-        double pos_y;
 
-Texture* texture;
+Texture texture;
+
+//INIT STATE IN CONSTRUCTOR
 Sprite* state;
-
 
 
 };

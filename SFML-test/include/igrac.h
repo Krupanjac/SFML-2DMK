@@ -65,6 +65,8 @@ namespace P{
         
         bool flag = true;
 
+        friend class Animate;
+
 
     };
 }
