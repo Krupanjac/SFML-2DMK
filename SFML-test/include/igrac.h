@@ -23,7 +23,6 @@ namespace P{
         int get_pl_position_y();
 
         void pl_direction_render(Player*);
-
         Player(double, double, Texture*);
 
 
@@ -41,7 +40,7 @@ namespace P{
         Sprite pl_render_update(Sprite,Player);
 
 
-        private:
+        protected:
         //Sirina i visina igraca
         double pl_width;
         double pl_height;

@@ -28,7 +28,7 @@ int main(){
     
     Player igrac(pl_def_width,pl_def_height,&txt);
     Player igrac2(pl_def_width,pl_def_height,&txt);
-    Animate sprites;
+    Animate sprites(pl_def_width,pl_def_height,&txt);
      igrac2.change_pl_y();
      igrac2.pl_render_reload();
 
