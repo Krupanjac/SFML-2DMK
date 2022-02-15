@@ -10,7 +10,7 @@ using namespace P;
 using namespace std;
 
 
-Player::Player(double width, double height, Texture *txt){
+Player::Player(double width, double height){
 pl_width = width;
 pl_height = height;
 pos_x = 0;
@@ -27,13 +27,11 @@ LEFT_TRIGGER = false;
 RIGHT_TRIGGER = false;
 FIRST_PASS = true;
 
-
-pl_model = pl_render(txt);
-
 }
 
-void Player::update_pl_model(Sprite state){
-pl_model = state;
+void Player::update_pl_model(Sprite* state){
+this->pl_model= state;
+this->pl_model->setPosition(pos_x, pos_y);
 }
 
 
@@ -47,25 +45,25 @@ void Player::update_pl_height(){
 }
 
 
-int Player::get_pl_width(){
-  return pl_width;
+int Player::get_pl_width() const{
+  return this->pl_width;
 }
 
-int Player::get_pl_height(){
-  return pl_height;
-}
-
-
-int Player::get_pl_position_x(){
-  return pos_x;
-}
-
-int Player::get_pl_position_y(){
-  return pos_y;
+int Player::get_pl_height() const{
+  return this->pl_height;
 }
 
 
-bool Player::collision(Player igrac){
+int Player::get_pl_position_x()const{
+  return this->pos_x;
+}
+
+int Player::get_pl_position_y()const{
+  return this->pos_y;
+}
+
+
+/*bool Player::collision(Player igrac){
   printf("%f,%f\n",this->pos_x+this->pl_width, igrac.pos_x+igrac.pl_width);
   if(this->pos_x+this->pl_width-igrac.pos_x+igrac.pl_width<pl_width/2 && this->pos_x+this->pl_width-igrac.pos_x+igrac.pl_width>pl_width/2.22){
     return true;
@@ -73,7 +71,7 @@ bool Player::collision(Player igrac){
   else
   return false;
 
-}
+}*/
 
 void Player::change_pl_y(){
   pos_x=scr_width/2-pl_width;
@@ -98,7 +96,7 @@ return pl_def_height;
 
 }
 //COLLISION PROBLEM POPRAVITI!!!
-Sprite Player::pl_render_update(Sprite r,Player igrac){
+Sprite* Player::pl_render_update(Sprite *r,Player igrac){
 //cout<<pos_y<<" "<<scr_height-pl_height<<endl;
  if(UP &&(pos_y>scr_height-pl_height)&& (pos_x>0)&&(pos_x<scr_width-pl_width)){
      // Resiti ovaj deo!!!
@@ -111,14 +109,14 @@ Sprite Player::pl_render_update(Sprite r,Player igrac){
  if(LEFT && (pos_x>0)) pos_x-=pl_speed;
  if(RIGHT&&(pos_x<scr_width-pl_width)) pos_x+=pl_speed;
  
-r.setPosition(pos_x, pos_y);
+r->setPosition(pos_x, pos_y);
 
 return r;
 
 }
 
 void Player::pl_render_reload(){
-  this->pl_model.setPosition(pos_x,pos_y);
+  this->pl_model->setPosition(pos_x,pos_y);
 
 }
 
@@ -137,13 +135,13 @@ Sprite Player::pl_render(Texture *txt){
 void Player::pl_direction_render(Player* igr2){
 
 if(igr2->get_pl_position_x()>this->get_pl_position_x()){
-  igr2->pl_model.setScale(-2.0f,2.0f);
-  this->pl_model.setScale(2.0f,2.0f);
-  //this->pl_model.setTextureRect(IntRect(1,3,-pl_width,pl_height));
+  igr2->pl_model->setScale(-2.0f,2.0f);
+  this->pl_model->setScale(2.0f,2.0f);
+  //this->pl_model->setTextureRect(IntRect(1,3,-pl_width,pl_height));
 }
   else{
-    igr2->pl_model.setScale(2.0f,2.0f);
-    this->pl_model.setScale(-2.0f,2.0f);
+    igr2->pl_model->setScale(2.0f,2.0f);
+    this->pl_model->setScale(-2.0f,2.0f);
   }
 
 }

@@ -1,3 +1,4 @@
+#include <thread>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include "pl_animation.h"
@@ -9,31 +10,48 @@ using namespace sf;
 using namespace std;
 using namespace P;
 
+void PP(Sprite *pl1, Sprite *pl2){
+
+if(Collision::PixelPerfectTest(*pl1,*pl2)){
+        cout<<"collision\n";
+    }
+
+}
+
+
 
 
 
 
 
 int main(){
+
+
     int brojac = 0;
     pressed = 0;
 
-    Texture txt;
-    txt.loadFromFile("res/4.png");
+    Clock clock;
+    Time t1;
+    double t1Sec;
 
-    
     //sprites.loadTextures(txt,)
    
     decl(1024,768);
     
-    Player igrac(pl_def_width,pl_def_height,&txt);
-    Player igrac2(pl_def_width,pl_def_height,&txt);
+    Player igrac(pl_def_width,pl_def_height);
+    Player igrac2(pl_def_width,pl_def_height);
     
-     igrac2.change_pl_y();
-     igrac2.pl_render_reload();
+ 
      
     Animate sprites;
+    Animate sprites2;
     sprites.load_texture(&igrac);
+    igrac2.change_pl_y();
+    sprites2.load_texture(&igrac2);
+
+    igrac.update_pl_model(sprites.get_sprite(brojac));
+    igrac2.update_pl_model(sprites2.get_sprite(brojac));
+    igrac2.pl_render_reload();
     
     //test.setTexture(txt);
     //test.setTextureRect(IntRect(10,10,100,200));
@@ -55,9 +73,20 @@ int main(){
     
     //glavna petlja
     //window.setKeyRepeatEnabled(false);
+
     while (window.isOpen()){
         //hvatac desavanja
         Event event;
+        if(brojac>5) brojac = 0;
+
+   t1 = clock.getElapsedTime();
+   t1Sec = t1.asSeconds();
+   if(t1Sec>0.15f){
+    igrac.update_pl_model(sprites.get_sprite(brojac));
+    igrac2.update_pl_model(sprites2.get_sprite(brojac));
+   clock.restart();
+   }
+   
 while (window.pollEvent(event))
 {
     if (event.type == Event::KeyPressed){
@@ -128,19 +157,22 @@ while (window.pollEvent(event))
                 window.close();
 
 }
-    if(Collision::PixelPerfectTest(igrac.pl_model,igrac2.pl_model)){
-        cout<<"collision\n";
-    }
+    
+
+        thread collision(PP,igrac.pl_model,igrac2.pl_model);
+
 
         igrac.pl_model = igrac.pl_render_update(igrac.pl_model,igrac2);
         igrac.pl_direction_render(&igrac2);
         igrac.gravity();
-        igrac.update_pl_model(sprites.get_sprite(brojac));
         window.clear();
-        window.draw(igrac.pl_model);
-        window.draw(igrac2.pl_model);
+        window.draw(*igrac.pl_model);
+        window.draw(*igrac2.pl_model);
         window.display();
+        //cout<<brojac<<endl;
         brojac++;
+
+        collision.detach();
     }
 
 }

@@ -10,20 +10,20 @@ namespace P{
     class Player{
 
         public:
-        Sprite pl_model;
-        void update_pl_model(Sprite);
+        Sprite *pl_model;
+        void update_pl_model(Sprite*);
 
 
         void update_pl_width();
         void update_pl_height();
 
-        int get_pl_width();
-        int get_pl_height();
-        int get_pl_position_x();
-        int get_pl_position_y();
+        int get_pl_width() const;
+        int get_pl_height() const;
+        int get_pl_position_x() const;
+        int get_pl_position_y() const;
 
         void pl_direction_render(Player*);
-        Player(double, double, Texture*);
+        Player(double, double);
 
 
         void pl_render_reload();
@@ -37,7 +37,7 @@ namespace P{
         bool collision(Player);
         RectangleShape update_size(RectangleShape);
 
-        Sprite pl_render_update(Sprite,Player);
+        Sprite* pl_render_update(Sprite*,Player);
 
 
         protected:
