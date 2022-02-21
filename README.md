@@ -1,6 +1,3 @@
-**Trenutni zadatak**
- "Klasa Animate, izmeniti jos, da proradi, segmentation fault na klasi vrv"
-
 
 # Arsen Djurdjev, Januar 2022 #
 
