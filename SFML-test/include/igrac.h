@@ -10,9 +10,10 @@ namespace P{
     class Player{
 
         public:
-        Sprite *pl_model;
+        Sprite* pl_model;
         void update_pl_model(Sprite*);
 
+        Sprite& get_pl_model() const;
 
         void update_pl_width();
         void update_pl_height();
@@ -22,7 +23,7 @@ namespace P{
         int get_pl_position_x() const;
         int get_pl_position_y() const;
 
-        void pl_direction_render(Player*);
+        void pl_direction_render(Player*,int*);
         Player(double, double);
 
 

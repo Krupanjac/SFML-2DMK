@@ -29,9 +29,16 @@ FIRST_PASS = true;
 
 }
 
+
+Sprite& Player::get_pl_model() const{
+  auto temp = this->pl_model;
+
+  return temp[0];
+}
+
 void Player::update_pl_model(Sprite* state){
 this->pl_model= state;
-this->pl_model->setPosition(pos_x, pos_y);
+//this->pl_model->setPosition(pos_x, pos_y);
 }
 
 
@@ -97,8 +104,8 @@ return pl_def_height;
 }
 //COLLISION PROBLEM POPRAVITI!!!
 Sprite* Player::pl_render_update(Sprite *r,Player igrac){
-//cout<<pos_y<<" "<<scr_height-pl_height<<endl;
- if(UP &&(pos_y>scr_height-pl_height)&& (pos_x>0)&&(pos_x<scr_width-pl_width)){
+//cout<<pos_y<<" "<<pos_x<<endl;
+ if(UP &&(pos_y>scr_height-pl_height)&& (pos_x>0)&&(pos_x<scr_width-pl_width/2)){
      // Resiti ovaj deo!!!
       pos_y-=pl_height/1.1;
  }
@@ -107,9 +114,9 @@ Sprite* Player::pl_render_update(Sprite *r,Player igrac){
    //r.setSize(Vector2f(pl_width,pl_height));
     }
  if(LEFT && (pos_x>0)) pos_x-=pl_speed;
- if(RIGHT&&(pos_x<scr_width-pl_width)) pos_x+=pl_speed;
+ if(RIGHT&&(pos_x<scr_width-pl_width/2)) pos_x+=pl_speed;
  
-r->setPosition(pos_x, pos_y);
+r->setPosition(this->pos_x, this->pos_y);
 
 return r;
 
@@ -132,16 +139,20 @@ Sprite Player::pl_render(Texture *txt){
 
 }
 
-void Player::pl_direction_render(Player* igr2){
+void Player::pl_direction_render(Player* igr2,int *rel){
+  //igr2->pl_render_reload();
 
 if(igr2->get_pl_position_x()>this->get_pl_position_x()){
   igr2->pl_model->setScale(-2.0f,2.0f);
   this->pl_model->setScale(2.0f,2.0f);
+  *rel = 0;
+  
   //this->pl_model->setTextureRect(IntRect(1,3,-pl_width,pl_height));
 }
   else{
     igr2->pl_model->setScale(2.0f,2.0f);
     this->pl_model->setScale(-2.0f,2.0f);
+    
   }
 
 }

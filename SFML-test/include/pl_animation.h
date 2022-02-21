@@ -22,7 +22,7 @@ void load_texture(Player*);
 Sprite* get_sprite(int);
 Texture *init_texture();
 
-Animate();
+Animate(Player*);
 
 
 private:

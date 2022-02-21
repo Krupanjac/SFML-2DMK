@@ -36,6 +36,9 @@
 #ifndef COLLISION_H
 #define COLLISION_H
 
+#include "igrac.h"
+
+using namespace P;
 namespace Collision {
     //////
     /// Test for a collision between two sprites by comparing the alpha values of overlapping pixels
@@ -70,6 +73,8 @@ namespace Collision {
     /// Supports scaling and rotation
     //////
     bool BoundingBoxTest(const sf::Sprite& Object1, const sf::Sprite& Object2);
+
+    bool SimpleCollision(const Player& igrac1, const Player& igrac2);
 }
 
 #endif	/* COLLISION_H */

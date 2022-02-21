@@ -5,6 +5,9 @@
 #include <SFML/Graphics.hpp>
 #include <map>
 #include "Collision.hpp"
+#include "igrac.h"
+
+using namespace P;
 
 namespace Collision
 {
@@ -187,5 +190,29 @@ namespace Collision
         }
         return true;
     }
+bool SimpleCollision(const Player& igrac1, const Player& igrac2){
+
+int x1 = igrac1.get_pl_position_x();
+int x2 = igrac2.get_pl_position_x();
+
+int y1 = igrac1.get_pl_position_y();
+int y2 = igrac2.get_pl_position_y();
+
+//cout<<igrac1.get_pl_width()<<endl;
+
+if(x1-x2<igrac1.get_pl_width()*2 && x1-x2>-(igrac1.get_pl_width())*2){
+    return true;
 }
+else return false;
+
+
+
+}
+
+
+}
+
+
+
+
 

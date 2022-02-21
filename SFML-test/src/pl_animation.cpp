@@ -1,4 +1,5 @@
 #include "igrac.h"
+#include <Collision.hpp>
 #include "pl_animation.h"
 #include <iostream>
 
@@ -7,10 +8,11 @@ using namespace P;
 
 Texture* Animate::init_texture(){
     Texture *temp = new Texture;
-    if(!temp->loadFromFile("res/EvilWizard/idle.png")){
+    
+    if(!Collision::CreateTextureAndBitmask(*temp,"res/EvilWizard/idle.png")){
         cout<<"TEXTURE MISSING!"<<endl;
     }
-    temp->setSmooth(true);
+    //temp->setSmooth(true);
     return temp;
 }
 
@@ -20,11 +22,11 @@ void Animate::load_texture(Player *igrac){
     int n = 5;
     int x = 107;
     int y = 68;
-    // NE MOZE OVAKO
     for(int i = 0; i<n; i++){
        temp->model->setTexture(*texture);
        temp->model->setTextureRect(IntRect(x,y,igrac->get_pl_width(),igrac->get_pl_height()));
        temp->model->setScale(2,2);
+       // cout<<igrac->get_pl_width()<<" "<<igrac->get_pl_height()<<" "<<igrac->get_pl_position_x()<<" "<<igrac->get_pl_position_y()<<endl;
       if((pl_def_height*2)>igrac->get_pl_height()){
           cout<<"usao\n";
        igrac->update_pl_height();
@@ -32,7 +34,8 @@ void Animate::load_texture(Player *igrac){
       
        temp->model->setPosition(igrac->get_pl_position_x(),igrac->get_pl_position_y());
       }
-       cout<<igrac->get_pl_width()<<" "<<igrac->get_pl_height()<<" "<<igrac->get_pl_position_x()<<" "<<igrac->get_pl_position_y()<<endl;
+      else temp->model->setPosition(igrac->get_pl_position_x(),igrac->get_pl_position_y());
+      
        x+=250;
        if(i<n){ 
            trenutni = temp;
@@ -58,7 +61,7 @@ Sprite* Animate::get_sprite(int br){
     return tmp->model;
 }
 
-Animate::Animate(){
+Animate::Animate(Player* igrac){
 
     //state = new Sprite[8];
     texture = new Texture;
@@ -66,6 +69,9 @@ Animate::Animate(){
     head = new state;
     head->next = nullptr;
     head->model = new Sprite;
+
+    load_texture(igrac);
+    
 }
 
 
