@@ -13,23 +13,24 @@ class Animate
 public:
 
 struct state{
-Sprite *model;
+Sprite *model; //idle
 
 struct state *next;
 };
 
-void load_texture(Player*);
-Sprite* get_sprite(int);
-Texture *init_texture();
+void load_texture(Player*,int,int,int);
+Sprite* get_sprite();
+Texture *init_texture(string);
 
-Animate(Player*);
+Animate(Player*,string,int,int,int);
 
 
 private:
 
 state *head;
 
-Texture *texture;
+Texture *texture; //idle texture
+Texture *run;
 
 //INIT STATE IN CONSTRUCTOR
 

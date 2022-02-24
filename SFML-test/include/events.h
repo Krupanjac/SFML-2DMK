@@ -10,9 +10,9 @@ class Desavanja{
 
 public:
 
-void keyboard_pressed(Player&,Player&,Event);
+void keyboard_pressed(Player&,Player&,Event,bool);
 
-void keyboard_released(Player&,Player&,Event);
+void keyboard_released(Player&,Event);
 
 
 private:

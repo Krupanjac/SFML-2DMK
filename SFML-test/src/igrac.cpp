@@ -1,10 +1,8 @@
 #include "igrac.h"
 #include "global.h"
 #include "Collision.hpp"
-#include <iostream>
 #include <cmath>
 #include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
 
 using namespace P;
 using namespace std;
@@ -20,14 +18,62 @@ DOWN = false;
 LEFT = false;
 RIGHT = false;
 gr_acc = 0;
-pl_speed = 0.09;
+pl_speed = 0.08;
 pi = 3.14;
 
 LEFT_TRIGGER = false;
 RIGHT_TRIGGER = false;
 FIRST_PASS = true;
 
+LEFT_COLLISION = false;
+RIGHT_COLLISION = false;
 }
+
+bool Player::get_right_collision() const{
+
+return this->RIGHT_COLLISION;
+
+}
+
+bool Player::get_left_collision() const{
+
+return this->LEFT_COLLISION;
+
+}
+
+void Player::update_right_collision_false() {
+
+this->RIGHT_COLLISION = false;
+
+
+
+}
+
+void Player::update_left_collision_false() {
+
+this->LEFT_COLLISION = false;
+
+
+
+}
+
+
+void Player::update_right_collision_true() {
+
+this->RIGHT_COLLISION = true;
+
+
+
+}
+
+void Player::update_left_collision_true() {
+
+this->LEFT_COLLISION = true;
+
+
+
+}
+
 
 
 Sprite& Player::get_pl_model() const{
@@ -44,10 +90,10 @@ this->pl_model= state;
 
 
 void Player::update_pl_width(){
-  this->pl_width*=2;
+  this->pl_width*=model_size;
 }
 void Player::update_pl_height(){
-  this->pl_height*=2;
+  this->pl_height*=model_size;
    this->pos_y = scr_height-pl_height;
 }
 
@@ -81,7 +127,7 @@ int Player::get_pl_position_y()const{
 }*/
 
 void Player::change_pl_y(){
-  pos_x=scr_width/2-pl_width;
+  pos_x=scr_width/2+pl_width;
 }
 
 
@@ -102,19 +148,70 @@ int Player::duck(){
 return pl_def_height;
 
 }
+
+void Player::jump(bool& trigger){
+
+if(trigger){
+::jump = true;
+//cout<<pos_y<<" "<<scr_height-(this->pl_height)<<endl;
+if(pos_y>scr_height-(this->pl_height*2.3f)){
+  pos_y-=gr_acc;
+  gr_acc+= incr;
+  if(incr < 0.0001)
+  incr*=2;
+
+
+}
+else{
+isPressed = true;
+trigger = false;
+gr_acc = 0;
+::fall = true;
+::incr = 0.00001;
+}
+
+
+
+}
+
+
+}
+
+
 //COLLISION PROBLEM POPRAVITI!!!
-Sprite* Player::pl_render_update(Sprite *r,Player igrac){
+Sprite* Player::pl_position_update(Sprite *r,Player igrac, bool& trigger,bool collision){
 //cout<<pos_y<<" "<<pos_x<<endl;
- if(UP &&(pos_y>scr_height-pl_height)&& (pos_x>0)&&(pos_x<scr_width-pl_width/2)){
+ if(UP &&(pos_y>scr_height-pl_height)&& (pos_x>(-1))&&(pos_x<=scr_width+pl_width)){
      // Resiti ovaj deo!!!
-      pos_y-=pl_height/1.1;
+     if(!isPressed)
+      trigger = true;
  }
  if(DOWN &&(floor(pos_y)==floor(scr_height-pl_height))){
    pl_height=pl_def_height/2;
    //r.setSize(Vector2f(pl_width,pl_height));
     }
- if(LEFT && (pos_x>0)) pos_x-=pl_speed;
- if(RIGHT&&(pos_x<scr_width-pl_width/2)) pos_x+=pl_speed;
+
+  
+ if(LEFT && (pos_x>0)) {
+  if(get_left_collision()){
+    if(!collision){
+   if(::inAir) pos_x -= pl_speed/2;
+   else pos_x-=pl_speed;
+    }
+  }
+
+ }
+
+ if(RIGHT&&(pos_x<=scr_width)){ 
+    if(get_right_collision()){
+    if(!collision){
+     if(::inAir) pos_x += pl_speed/2;
+   else pos_x+=pl_speed;
+    }
+    }
+    
+ }
+
  
 r->setPosition(this->pos_x, this->pos_y);
 
@@ -139,20 +236,22 @@ Sprite Player::pl_render(Texture *txt){
 
 }
 
-void Player::pl_direction_render(Player* igr2,int *rel){
+void Player::pl_direction_render(Player* igr2){
   //igr2->pl_render_reload();
 
 if(igr2->get_pl_position_x()>this->get_pl_position_x()){
-  igr2->pl_model->setScale(-2.0f,2.0f);
-  this->pl_model->setScale(2.0f,2.0f);
-  *rel = 0;
+  igr2->pl_model->setScale(-model_size,model_size);
+  this->pl_model->setScale(model_size,model_size);
+  update_right_collision_true();
+  update_left_collision_false();
   
   //this->pl_model->setTextureRect(IntRect(1,3,-pl_width,pl_height));
 }
   else{
-    igr2->pl_model->setScale(2.0f,2.0f);
-    this->pl_model->setScale(-2.0f,2.0f);
-    
+    igr2->pl_model->setScale(model_size,model_size);
+    this->pl_model->setScale(-model_size,model_size);
+    update_right_collision_false();
+    update_left_collision_true();
   }
 
 }
@@ -242,23 +341,34 @@ break;
 }
 
 
-void Player::gravity(){
+void Player::gravity(bool jump_trigger){
+if(!jump_trigger){
+  ::jump = false;
   // Y IDE OD 0 DO 1 A X JE SIN
+  if(pos_y-(scr_height-pl_height)<1 && pos_y-(scr_height-pl_height)>(-1)){
+    ::fall = false;
+  }
+
   if(RIGHT_TRIGGER){
     LEFT_TRIGGER = false;
     //cout<<pos_y<<" "<<scr_height-pl_height<<endl;
     if(pos_y<=scr_height-pl_height){
       //printf("%f, %f\n",gr_acc,pi);
       if(gr_acc<=pi/2)
-        pos_y+= sin(gr_acc)/2;
+        pos_y+= gr_acc;
         else
-        pos_y-=sin(gr_acc)/2;
-        if(pos_x<scr_width-pl_width)
-        pos_x += gr_acc;
-        gr_acc+=0.0001;
+        pos_y-=gr_acc;
+        if(pos_x<scr_width-pl_width/2)
+        pos_x += gr_acc/2;
+        gr_acc+=incr;
+
+      if(incr <0.0001) incr*=2;
         
-        if(gr_acc>=pi)
+        if(gr_acc>=pi){
+         // ::jump = false;
          gr_acc=0;
+         incr = 0.00001;
+        }
         //RIGHT_TRIGGER = false;   
        //if(pos_x<scr_width-pl_width) pos_x+=gr_acc/30;
     }
@@ -271,23 +381,44 @@ void Player::gravity(){
     if(pos_y<=scr_height-pl_height){
       //printf("%f, %f\n",gr_acc,pi);
       if(gr_acc<=pi/2)
-        pos_y+= sin(gr_acc)/2;
+        pos_y+= gr_acc;
         else
-        pos_y-=sin(gr_acc)/2;
+        pos_y-=gr_acc;
         if(pos_x>0)
-        pos_x -= gr_acc;
-        gr_acc+=0.0001;
-        
-        if(gr_acc>=pi)
+        pos_x -= gr_acc/2;
+        gr_acc+=incr;
+        if(incr < 0.0001)
+        incr*= 2;
+        if(gr_acc>=pi){
+          //::jump = false;
+          incr = 0.00001;
          gr_acc=0;
+        }
         //RIGHT_TRIGGER = false;   
        //if(pos_x<scr_width-pl_width) pos_x+=gr_acc/30;
     }
    
   }
   else if(!LEFT_TRIGGER && !RIGHT_TRIGGER){
+    if(pos_y<=scr_height-pl_height){
+      //printf("%f, %f\n",gr_acc,pi);
+      if(gr_acc<=pi/2)
+        pos_y+= gr_acc;
+        else
+        pos_y-=gr_acc;
+        gr_acc+=incr;
+        if(incr < 0.0001)
+        incr*=2;
+        
+        if(gr_acc>=pi){
+         gr_acc=0;
+        incr = 0.00001;
+        }
+        //RIGHT_TRIGGER = false;   
+       //if(pos_x<scr_width-pl_width) pos_x+=gr_acc/30;
+    }
 
   }
   
-
+}else ::fall = false;
 }

@@ -14,27 +14,19 @@ using namespace std;
 using namespace P;
 
 
-void PP(Sprite pl1, Sprite pl2){
+void AABB(Player igrac, Player igrac2){
 
-if(Collision::BoundingBoxTest(pl1,pl2)){
+if(Collision::SimpleCollision(igrac,igrac2)){
         cout<<"collision\n";
     }
-    else
-     cout<<"no collision"<<endl;
 
 }
 
 
 int main(){
     //thread direction;
-
-    int reload = 0;
+    bool jump_trigger = false;
     FPS fps;
-
-    Desavanja desavanja;
-
-
-    int sprite_buffer = 0;
     pressed = 0;
 
     Clock clock;
@@ -42,7 +34,9 @@ int main(){
     double t1Sec;
 
     //sprites.loadTextures(txt,)
-   
+    Desavanja desavanja;
+
+
     decl(1024,768);
     
     Player igrac(pl_def_width,pl_def_height);
@@ -50,9 +44,13 @@ int main(){
     
  
      
-    Animate sprites(&igrac);
+    Animate pl_state_idle(&igrac,"res/EvilWizard/idle.png",8,107,68);
+    Animate pl_state_run(&igrac,"res/EvilWizard/Run.png",8,107,68);
+    Animate pl_state_jump(&igrac,"res/EvilWizard/Jump.png",2,90,70);
+    Animate pl_state_fall(&igrac,"res/EvilWizard/Fall.png",2,90,70);
     igrac2.change_pl_y();
-    Animate sprites2(&igrac2);
+    Animate pl_state_idle2(&igrac2,"res/EvilWizard/idle.png",8,107,68);
+    Animate pl_state_run2(&igrac2,"res/EvilWizard/Run.png",8,107,68);
 
     
 
@@ -65,22 +63,31 @@ int main(){
     RenderWindow window(VideoMode(scr_width, scr_height), "Ratko Mladic Kombat!");
 
 
-    while (window.isOpen()){
+while (window.isOpen()){
         //hvatac desavanja
         Event event;
-        if(sprite_buffer>5) sprite_buffer = 0;
 
    t1 = clock.getElapsedTime();
    t1Sec = t1.asSeconds();
    if(t1Sec>0.15f){
-    igrac.update_pl_model(sprites.get_sprite(sprite_buffer));
-    igrac2.update_pl_model(sprites2.get_sprite(sprite_buffer));
-    //sprite_buffer ZA RELOAD!!!
-    if(reload<10) {
-        
-    //igrac2.pl_render_reload();
-    reload++;
+    igrac2.update_pl_model(pl_state_idle2.get_sprite());
+    if(!run && !jump && !fall){
+    igrac.update_pl_model(pl_state_idle.get_sprite());
+    
     }
+    else if (run){
+    igrac.update_pl_model(pl_state_run.get_sprite());
+    //igrac2.update_pl_model(pl_state_run2.get_sprite(sprite_buffer));
+    }
+    if (jump){
+    igrac.update_pl_model(pl_state_jump.get_sprite());
+    //igrac2.update_pl_model(pl_state_run2.get_sprite(sprite_buffer));
+    }
+    if(fall){
+    igrac.update_pl_model(pl_state_fall.get_sprite());
+
+    }
+    //sprite_buffer ZA RELOAD!!!
    clock.restart();
    }
    
@@ -88,11 +95,11 @@ while (window.pollEvent(event))
 {
     if (event.type == Event::KeyPressed){
 
-        desavanja.keyboard_pressed(igrac,igrac2,event);
+        desavanja.keyboard_pressed(igrac,igrac2,event,jump_trigger);
     }
 
     if (event.type == Event::KeyReleased){
-        desavanja.keyboard_released(igrac,igrac2,event);
+        desavanja.keyboard_released(igrac,event);
        
     }  
 
@@ -108,25 +115,22 @@ while (window.pollEvent(event))
        fps.update();
        //printf("%.2f fps\n",(float)fps.getFPS()/100.f);
 
+        igrac.pl_model = igrac.pl_position_update(igrac.pl_model,igrac2,jump_trigger,Collision::SimpleCollision(igrac,igrac2));
+        igrac.pl_direction_render(&igrac2);
 
-        igrac.pl_model = igrac.pl_render_update(igrac.pl_model,igrac2);
-        igrac.pl_direction_render(&igrac2,&reload);
-        if(Collision::SimpleCollision(igrac,igrac2)){
-            cout<<"collision\n";
-        }
-        //thread collision(PP,igrac.get_pl_model(),igrac2.get_pl_model());
-        //collision.detach();
-        //PP(igrac.get_pl_model(),igrac2.get_pl_model());
-        igrac.gravity();
+        //AABB(igrac,igrac2);
+
+       if(!isPressed)
+        igrac.jump(jump_trigger);
+
+        igrac.gravity(jump_trigger);
+       
         window.clear();
-        cout<<igrac.get_pl_position_x()<<" "<<igrac2.get_pl_position_x()<<endl;
+        //cout<<igrac.get_pl_position_x()<<" "<<igrac2.get_pl_position_x()<<endl;
         window.draw(igrac.get_pl_model());
         window.draw(igrac2.get_pl_model());
         window.display();
-        sprite_buffer++;
 
-
-        
     }
 
 }
