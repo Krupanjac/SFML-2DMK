@@ -22,4 +22,4 @@ $(BIN)/$(EXECUTABLE): $(SRC)/*.cpp
 	$(CXX) $(CXX_FLAGS) -I"$(INCLUDE)" -I"$(SFML_INCLUDE)" -DSFML_STATIC -L"$(LIB)" -L"$(SFML_LIB)" $^ -o $@ $(LIBRARIES)
 
 clean:
-	-rm $(BIN)/*
+	del $(BIN)\$(EXECUTABLE).exe
