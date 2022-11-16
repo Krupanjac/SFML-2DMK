@@ -24,7 +24,7 @@ Inspired by Mortal Kombat.
 
 **!!!BITNO!!!**
 
-Testirano na Linux kernelu, info:
+Testirano na Linux distribuciji, info:
 
 Distributor ID:	Debian
 
@@ -34,3 +34,13 @@ Release:	11
 
 Codename:	bullseye
 
+
+Testirano na Windowsu, info:
+
+ID: Windows
+
+Description: Microsoft
+
+Release: 11
+
+Codename: Windows 11
