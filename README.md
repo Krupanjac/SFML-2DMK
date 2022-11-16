@@ -1,7 +1,3 @@
-
-# Arsen Djurdjev, Januar 2022 #
-
-
 # SFML-2DMK
 Inspired by Mortal Kombat.
 
