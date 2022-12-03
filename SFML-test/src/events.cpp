@@ -14,11 +14,11 @@ void Desavanja::keyboard_pressed(Player &igrac,Player& igrac2,Event event,bool j
 
         }
 
-            if (event.key.code == Keyboard::S)
+           /* if (event.key.code == Keyboard::S)
             {
                 igrac.pl_set_pos(2);
                 //igrac.pl_model = igrac.pl_render_update(igrac.pl_model,igrac2,jump_trigger);
-            }
+            }*/
                 if (event.key.code == Keyboard::A)
             {
                 if(igrac.get_pl_position_y() < (scr_height-igrac.get_pl_height()))
@@ -56,12 +56,12 @@ void Desavanja::keyboard_released(Player &igrac,Event event){
             //trigger = false;
         }
 
-            if (event.key.code == Keyboard::S)
+            /*if (event.key.code == Keyboard::S)
             {
                 igrac.pl_update_pos(2);
                 //rect=igrac.update_size(rect);
                 
-            }
+            }*/
                 if (event.key.code == Keyboard::A)
             {
                 igrac.pl_update_pos(3);

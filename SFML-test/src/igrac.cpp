@@ -193,22 +193,16 @@ Sprite* Player::pl_position_update(Sprite *r,Player igrac, bool& trigger,bool co
 
   
  if(LEFT && (pos_x>0)) {
-  if(get_left_collision()){
-    if(!collision){
+ 
    if(::inAir) pos_x -= pl_speed/2;
    else pos_x-=pl_speed;
-    }
-  }
 
  }
 
  if(RIGHT&&(pos_x<=scr_width)){ 
-    if(get_right_collision()){
-    if(!collision){
+  
      if(::inAir) pos_x += pl_speed/2;
    else pos_x+=pl_speed;
-    }
-    }
     
  }
 

@@ -1,6 +1,7 @@
 #include "igrac.h"
 #include <Collision.hpp>
 #include "pl_animation.h"
+#include "maps.h"
 #include <iostream>
 
 using namespace P;
@@ -47,6 +48,29 @@ void Animate::load_texture(Player *igrac,int model_buffer_size,int x_pos, int y_
     trenutni->next = head;
 }
 
+void Animate::load_map_texture(Maps *mapa,int model_buffer_size,int x_pos, int y_pos){
+    state *temp = this->head;
+    state *trenutni;
+    int n = model_buffer_size;
+    int x = x_pos;
+    int y = y_pos;
+    for(int i = 0; i<n; i++){
+       temp->model->setTexture(*texture);
+       temp->model->setScale(model_size,model_size);  
+       x+=250;
+  
+           trenutni = temp;
+           temp = temp->next;
+           temp = new state;
+           trenutni->next = temp;
+           temp->model = new Sprite;
+
+    }
+    trenutni->next = head;
+   }
+
+
+
 Sprite *Animate::get_sprite(){
     head = head->next;
     return head->model;
@@ -65,4 +89,16 @@ Animate::Animate(Player* igrac,string model_status,int model_buffer_size,int x_p
     
 }
 
+Animate::Animate(Maps* mapa,string model_status,int model_buffer_size,int x_pos, int y_pos){
+
+    //state = new Sprite[8];
+    texture = new Texture;
+    texture = init_texture(model_status);
+    head = new state;
+    head->next = nullptr;
+    head->model = new Sprite;
+
+    load_map_texture(mapa,model_buffer_size,x_pos,y_pos);
+    
+}
 

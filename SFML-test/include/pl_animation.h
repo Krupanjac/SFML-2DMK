@@ -3,6 +3,7 @@
 #include <iostream>
 #include "global.h"
 #include "igrac.h"
+#include "maps.h"
 
 using namespace P;
 using namespace std;
@@ -19,10 +20,12 @@ struct state *next;
 };
 
 void load_texture(Player*,int,int,int);
+void load_map_texture(Maps*,int,int,int);
 Sprite* get_sprite();
 Texture *init_texture(string);
 
 Animate(Player*,string,int,int,int);
+Animate(Maps*,string,int,int,int);
 
 
 private:

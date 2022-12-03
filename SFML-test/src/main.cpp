@@ -6,6 +6,7 @@
 #include "Collision.hpp"
 #include "global.h"
 #include "igrac.h"
+#include "maps.h"
 #include "FPS.h"
 #include "events.h"
 
@@ -23,6 +24,12 @@ if(Collision::SimpleCollision(igrac,igrac2)){
 }
 
 
+
+
+
+
+
+
 int main(){
     //thread direction;
     bool jump_trigger = false;
@@ -32,6 +39,10 @@ int main(){
     Clock clock;
     Time t1;
     double t1Sec;
+    Font font;
+    Text fps_counter;
+    fps_counter.setCharacterSize(24);
+    fps_counter.setFillColor(Color::White);
 
     //sprites.loadTextures(txt,)
     Desavanja desavanja;
@@ -41,19 +52,23 @@ int main(){
     
     Player igrac(pl_def_width,pl_def_height);
     Player igrac2(pl_def_width,pl_def_height);
+    Maps mapa;
     
- 
-     
-    Animate pl_state_idle(&igrac,"res/EvilWizard/idle.png",8,107,68);
-    Animate pl_state_run(&igrac,"res/EvilWizard/Run.png",8,107,68);
-    Animate pl_state_jump(&igrac,"res/EvilWizard/Jump.png",2,90,70);
-    Animate pl_state_fall(&igrac,"res/EvilWizard/Fall.png",2,90,70);
+    Animate map_state(&mapa,"res\\Maps\\1.png",1,0,0);
+    mapa.update_map_model(map_state.get_sprite());
+    Animate pl_state_idle(&igrac,"res\\EvilWizard\\idle.png",8,107,68);
+    Animate pl_state_run(&igrac,"res\\EvilWizard\\Run.png",8,107,68);
+    Animate pl_state_jump(&igrac,"res\\EvilWizard\\Jump.png",2,90,70);
+    Animate pl_state_fall(&igrac,"res\\EvilWizard\\Fall.png",2,90,70);
     igrac2.change_pl_y();
-    Animate pl_state_idle2(&igrac2,"res/EvilWizard/idle.png",8,107,68);
-    Animate pl_state_run2(&igrac2,"res/EvilWizard/Run.png",8,107,68);
-
-    
-
+    Animate pl_state_idle2(&igrac2,"res\\EvilWizard\\idle.png",8,107,68);
+    Animate pl_state_run2(&igrac2,"res\\EvilWizard\\Run.png",8,107,68);
+    //font
+    if (!font.loadFromFile("font\\arial.ttf"))
+{
+    cout<<"GRESKA!"<<endl;
+}
+fps_counter.setFont(font);
 
     //aa
    ContextSettings settings;
@@ -90,7 +105,6 @@ while (window.isOpen()){
     //sprite_buffer ZA RELOAD!!!
    clock.restart();
    }
-   
 while (window.pollEvent(event))
 {
     if (event.type == Event::KeyPressed){
@@ -112,7 +126,9 @@ while (window.pollEvent(event))
 
 }   
 
-       fps.update();
+        fps.update();
+        fps_counter.setString("FPS: "+to_string((float)fps.getFPS()/100.f));
+        
        //printf("%.2f fps\n",(float)fps.getFPS()/100.f);
 
         igrac.pl_model = igrac.pl_position_update(igrac.pl_model,igrac2,jump_trigger,Collision::SimpleCollision(igrac,igrac2));
@@ -127,8 +143,11 @@ while (window.pollEvent(event))
        
         window.clear();
         //cout<<igrac.get_pl_position_x()<<" "<<igrac2.get_pl_position_x()<<endl;
+        window.draw(mapa.get_map_model());
         window.draw(igrac.get_pl_model());
         window.draw(igrac2.get_pl_model());
+        window.draw(fps_counter);
+       
         window.display();
 
     }

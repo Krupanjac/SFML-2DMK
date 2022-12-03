@@ -12,14 +12,17 @@ LIBRARIES	:= -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lopengl32 -lfree
 EXECUTABLE	:= main
 
 
-all: $(BIN)/$(EXECUTABLE)
+all: $(EXECUTABLE)
 
-run: clean all
+run: clean all exec
 	clear
-	./$(BIN)/$(EXECUTABLE)
+	./$(EXECUTABLE)
 
-$(BIN)/$(EXECUTABLE): $(SRC)/*.cpp
+$(EXECUTABLE): $(SRC)/*.cpp
 	$(CXX) $(CXX_FLAGS) -I"$(INCLUDE)" -I"$(SFML_INCLUDE)" -DSFML_STATIC -L"$(LIB)" -L"$(SFML_LIB)" $^ -o $@ $(LIBRARIES)
 
 clean:
-	del $(BIN)\$(EXECUTABLE).exe
+	del $(EXECUTABLE).exe
+
+exec:
+	$(EXECUTABLE).exe
