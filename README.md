@@ -9,10 +9,10 @@ Inspired by Mortal Kombat.
 
 1. Povezivanje lib sa IDE ✓
 2. Osnovna logika funkcionalnosti kretanja ✓
-3. Napredna logika funkcionalnosti kretanja (dodati naprednije fizicke atribute) (~70% zavrseno) 𐄂
+3. Napredna logika funkcionalnosti kretanja (dodati naprednije fizicke atribute) 𐄂
 4. Osnovna logika renderovanja prozora ✓
-5. Napredna logika renderovanja prozora, spriteovi i animacije (~10% zavrseno) 𐄂
-6. Iskoriscenost memorije i optimizacija koda ~62% - 70%
+5. Napredna logika renderovanja prozora, spriteovi i animacije (~60% zavrseno) 𐄂
+6. Iskoriscenost memorije i optimizacija koda
  
 **7. Dodati dodatne protokole i zadatke nakon izvrsenja izlistanih.**
 
@@ -24,7 +24,7 @@ Inspired by Mortal Kombat.
 
 **!!!BITNO!!!**
 
-Testirano na Linux distribuciji, info:
+Tested on Linux Distribution:
 
 Distributor ID:	Debian
 
@@ -35,7 +35,7 @@ Release:	11
 Codename:	bullseye
 
 
-Testirano na Windowsu, info:
+Tested on Windows:
 
 ID: Windows
 
