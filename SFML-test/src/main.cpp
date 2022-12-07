@@ -52,10 +52,10 @@ int main(){
     
     Player igrac(pl_def_width,pl_def_height);
     Player igrac2(pl_def_width,pl_def_height);
-    Maps mapa;
+    Maps mapa(scr_width,scr_height,igrac.get_pl_position_x(),igrac.get_pl_position_y());
     
-    Animate map_state(&mapa,"res\\Maps\\1.png",1,0,0);
-    mapa.update_map_model(map_state.get_sprite());
+    Animate map_state(&mapa,"res\\Maps\\1.png",1,100,300);
+    mapa.update_map_model(map_state.get_sprite(),igrac.get_pl_position_x(),igrac.get_pl_position_y());
     Animate pl_state_idle(&igrac,"res\\EvilWizard\\idle.png",8,107,68);
     Animate pl_state_run(&igrac,"res\\EvilWizard\\Run.png",8,107,68);
     Animate pl_state_jump(&igrac,"res\\EvilWizard\\Jump.png",2,90,70);
@@ -135,6 +135,11 @@ while (window.pollEvent(event))
         igrac.pl_direction_render(&igrac2);
 
         //AABB(igrac,igrac2);
+
+        mapa.update_pl_x(igrac.get_pl_position_x());
+        mapa.update_pl_y(igrac.get_pl_position_y());
+
+        mapa.update_map_model(map_state.get_sprite(),igrac.get_pl_position_x(),igrac.get_pl_position_y());
 
        if(!isPressed)
         igrac.jump(jump_trigger);

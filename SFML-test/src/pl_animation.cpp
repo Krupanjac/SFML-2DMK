@@ -56,7 +56,9 @@ void Animate::load_map_texture(Maps *mapa,int model_buffer_size,int x_pos, int y
     int y = y_pos;
     for(int i = 0; i<n; i++){
        temp->model->setTexture(*texture);
-       temp->model->setScale(model_size,model_size);  
+       temp->model->setTextureRect(IntRect(x,y,mapa->get_map_width(),mapa->get_map_height()));
+       temp->model->setScale(1,1); 
+       temp->model->setPosition(0,0);
        x+=250;
   
            trenutni = temp;
@@ -75,6 +77,10 @@ Sprite *Animate::get_sprite(){
     head = head->next;
     return head->model;
 }
+ 
+
+
+
 
 Animate::Animate(Player* igrac,string model_status,int model_buffer_size,int x_pos, int y_pos){
 

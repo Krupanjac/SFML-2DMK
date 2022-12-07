@@ -27,6 +27,9 @@ Texture *init_texture(string);
 Animate(Player*,string,int,int,int);
 Animate(Maps*,string,int,int,int);
 
+int pl_position_x() const;
+
+int pl_position_y() const;
 
 private:
 
