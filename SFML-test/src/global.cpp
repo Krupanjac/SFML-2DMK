@@ -2,7 +2,7 @@
 
 int scr_width;
 int scr_height;
-double model_size = 3.0f;
+double model_size = 3.5f;
 
 double pl_def_height = 100;
 double pl_def_width = 60;
