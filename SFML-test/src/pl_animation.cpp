@@ -48,25 +48,56 @@ void Animate::load_texture(Player *igrac,int model_buffer_size,int x_pos, int y_
     trenutni->next = head;
 }
 
-void Animate::load_map_texture(Maps *mapa,int model_buffer_size,int x_pos, int y_pos){
+void Animate::load_map_texture(Maps *mapa,int model_buffer_size,int x_pos, int y_pos,string model_status){
     state *temp = this->head;
     state *trenutni;
     int n = model_buffer_size;
     int x = x_pos;
     int y = y_pos;
+    int j = 1;
     for(int i = 0; i<n; i++){
-       temp->model->setTexture(*texture);
+        if(i==0){
+        temp->texture_idle = new Texture;
+        temp->texture_idle = init_texture(model_status+"0.png");
+       temp->model->setTexture(*temp->texture_idle);
+       temp->map_sec_name = model_status+to_string(i)+".png";
+       
        temp->model->setTextureRect(IntRect(x,y,mapa->get_map_width(),mapa->get_map_height()));
-       temp->model->setScale(1,1); 
+       temp->model->setScale(1.5,1.5); 
        temp->model->setPosition(0,0);
-       x+=250;
+        }
+        else if (i % 2 != 0){
+            //cout<<i<<": "<<model_status+to_string(j)+".png"<<endl;
+        temp->texture_idle = new Texture;
+        temp->texture_idle = init_texture(model_status+to_string(j)+".png");
+       temp->model->setTexture(*temp->texture_idle);
+            temp->model->setTextureRect(IntRect(x,y,mapa->get_map_width(),mapa->get_map_height()));
+            temp->model->setScale(1.5,1.5);
+            temp->model->setPosition(0,0);
+            temp->map_sec_name = model_status+to_string(j)+".png";
+            j++;
+
+        }
+        else if (i % 2 == 0){
+             //cout<<i<<":(nula) "<<model_status+"0.png"<<endl;
+            init_texture(model_status+"0.png");
+            temp->texture_idle = new Texture;
+            temp->texture_idle = init_texture(model_status+"0.png");
+            temp->model->setTexture(*temp->texture_idle);
+            temp->model->setTextureRect(IntRect(x,y,mapa->get_map_width(),mapa->get_map_height()));
+            temp->model->setScale(1.5,1.5);
+            temp->model->setPosition(0,0);
+            temp->map_sec_name = model_status+"0.png";
+        }
   
            trenutni = temp;
+           temp->next = nullptr;
            temp = temp->next;
+           if(i+1<n)
            temp = new state;
            trenutni->next = temp;
+              if(i+1<n)
            temp->model = new Sprite;
-
     }
     trenutni->next = head;
    }
@@ -77,9 +108,18 @@ Sprite *Animate::get_sprite(){
     head = head->next;
     return head->model;
 }
+
+string Animate::get_map_sec_name(){
+    return head->map_sec_name;
+}
  
+Animate::state *Animate::get_master_state(){
+    return master_head;
+}
 
-
+Sprite *Animate::get_master_sprite(){
+    return master_head->model;
+}
 
 
 Animate::Animate(Player* igrac,string model_status,int model_buffer_size,int x_pos, int y_pos){
@@ -99,12 +139,13 @@ Animate::Animate(Maps* mapa,string model_status,int model_buffer_size,int x_pos,
 
     //state = new Sprite[8];
     texture = new Texture;
-    texture = init_texture(model_status);
+    texture = init_texture(model_status+"0.png");
     head = new state;
     head->next = nullptr;
     head->model = new Sprite;
-
-    load_map_texture(mapa,model_buffer_size,x_pos,y_pos);
+    
+    load_map_texture(mapa,model_buffer_size,x_pos,y_pos,model_status);
+    master_head = head;
     
 }
 

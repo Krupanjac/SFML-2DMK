@@ -37,7 +37,10 @@ int main(){
     pressed = 0;
 
     Clock clock;
+    Clock clock2;
     Time t1;
+    Time t2;
+    double t2Sec;
     double t1Sec;
     Font font;
     Text fps_counter;
@@ -54,15 +57,18 @@ int main(){
     Player igrac2(pl_def_width,pl_def_height);
     Maps mapa(scr_width,scr_height,igrac.get_pl_position_x(),igrac.get_pl_position_y());
     
-    Animate map_state(&mapa,"res\\Maps\\1.png",1,100,300);
-    mapa.update_map_model(map_state.get_sprite(),igrac.get_pl_position_x(),igrac.get_pl_position_y());
+    Animate map_state(&mapa,"res\\Maps\\mk_RockMountains\\",8,100,300);
+    mapa.update_map_model(map_state.get_sprite());
+    mapa.update_map_sprite_cord(igrac.get_pl_position_x(),igrac.get_pl_position_y());
     Animate pl_state_idle(&igrac,"res\\EvilWizard\\idle.png",8,107,68);
     Animate pl_state_run(&igrac,"res\\EvilWizard\\Run.png",8,107,68);
     Animate pl_state_jump(&igrac,"res\\EvilWizard\\Jump.png",2,90,70);
     Animate pl_state_fall(&igrac,"res\\EvilWizard\\Fall.png",2,90,70);
+    Animate pl_state_attack(&igrac,"res\\EvilWizard\\Attack1.png",8,107,68);
     igrac2.change_pl_y();
     Animate pl_state_idle2(&igrac2,"res\\EvilWizard\\idle.png",8,107,68);
     Animate pl_state_run2(&igrac2,"res\\EvilWizard\\Run.png",8,107,68);
+    
     //font
     if (!font.loadFromFile("font\\arial.ttf"))
 {
@@ -84,9 +90,13 @@ while (window.isOpen()){
 
    t1 = clock.getElapsedTime();
    t1Sec = t1.asSeconds();
+
+    t2 = clock2.getElapsedTime();
+    t2Sec = t2.asSeconds();
+
    if(t1Sec>0.15f){
     igrac2.update_pl_model(pl_state_idle2.get_sprite());
-    if(!run && !jump && !fall){
+    if(!run && !jump && !fall && !attack){
     igrac.update_pl_model(pl_state_idle.get_sprite());
     
     }
@@ -102,8 +112,12 @@ while (window.isOpen()){
     igrac.update_pl_model(pl_state_fall.get_sprite());
 
     }
+    if(attack){
+    igrac.update_pl_model(pl_state_attack.get_sprite());
+    }
     //sprite_buffer ZA RELOAD!!!
    clock.restart();
+   // mapa.update_map_model(map_state.get_sprite(),igrac.get_pl_position_x(),igrac.get_pl_position_y());
    }
 while (window.pollEvent(event))
 {
@@ -137,10 +151,13 @@ while (window.pollEvent(event))
         //AABB(igrac,igrac2);
 
         mapa.update_pl_x(igrac.get_pl_position_x());
-        mapa.update_pl_y(igrac.get_pl_position_y());
-
-        mapa.update_map_model(map_state.get_sprite(),igrac.get_pl_position_x(),igrac.get_pl_position_y());
-
+        mapa.pl_move_y(igrac.get_pl_position_y());
+        if(t2Sec>0.4f){
+        mapa.update_map_model(map_state.get_sprite());
+       // cout<<map_state.get_map_sec_name()<<endl;
+        clock2.restart();
+        }
+        mapa.update_map_sprite_cord(igrac.get_pl_position_x(),igrac.get_pl_position_y());
        if(!isPressed)
         igrac.jump(jump_trigger);
 
@@ -150,7 +167,7 @@ while (window.pollEvent(event))
         //cout<<igrac.get_pl_position_x()<<" "<<igrac2.get_pl_position_x()<<endl;
         window.draw(mapa.get_map_model());
         window.draw(igrac.get_pl_model());
-        window.draw(igrac2.get_pl_model());
+        //window.draw(igrac2.get_pl_model());
         window.draw(fps_counter);
        
         window.display();

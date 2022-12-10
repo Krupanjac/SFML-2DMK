@@ -12,6 +12,7 @@ extern float incr;
 extern bool run;
 extern bool jump;
 extern bool fall;
+extern bool attack;
 extern bool inAir;
 //extern double pl_speed;
 

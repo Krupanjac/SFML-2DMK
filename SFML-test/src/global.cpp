@@ -16,6 +16,7 @@ bool inAir = false;
 bool run = false;
 bool fall = false;
 bool jump = false;
+bool attack = false;
 float incr = 0.00001;
 //double pl_speed = 0.09;
 

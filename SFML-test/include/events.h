@@ -17,6 +17,7 @@ void keyboard_released(Player&,Event);
 
 private:
 
-
-
+Time t2;
+double t2Sec;
+Clock clock2;
 };

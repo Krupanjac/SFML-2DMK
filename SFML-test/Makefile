@@ -8,7 +8,7 @@ SFML_INCLUDE := C:\Users\arsen\Documents\LIBS\SFML-2.5.1\include
 SFML_LIB := C:\Users\arsen\Documents\LIBS\SFML-2.5.1\lib
 LIB		:= lib
 
-LIBRARIES	:= -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lopengl32 -lfreetype -lwinmm -lgdi32 -mwindows
+LIBRARIES	:= -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lopengl32 -lfreetype -lwinmm -lgdi32 
 EXECUTABLE	:= main
 
 
