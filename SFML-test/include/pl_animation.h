@@ -18,12 +18,15 @@ Sprite *model; //idle
 String map_sec_name;
 Texture *texture_idle; //idle texture
 
+int pl_model_numeration;
+
 struct state *next;
 };
 
 void load_texture(Player*,int,int,int);
 void load_map_texture(Maps*,int,int,int,string);
 string get_map_sec_name();
+int get_pl_model_numeration();
 Sprite* get_sprite();
 Texture *init_texture(string);
 

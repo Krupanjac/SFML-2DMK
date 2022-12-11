@@ -46,8 +46,6 @@ void Desavanja::keyboard_pressed(Player &igrac,Player& igrac2,Event event,bool j
             if (event.key.code == Keyboard::F){
                 //
                  ::attack = true;
-                   t2 = clock2.getElapsedTime();
-                   t2Sec = t2.asSeconds();
             }
     
 }
@@ -87,10 +85,8 @@ void Desavanja::keyboard_released(Player &igrac,Event event){
             igrac.pl_update_pos(1);
         } 
         if (event.key.code == Keyboard::F){
-            if(t2Sec>0.25f){
-            ::attack = false;
-            clock2.restart();
-            }
+          
+            //::attack = false;
         }   
 
 

@@ -36,6 +36,8 @@ int main(){
     FPS fps;
     pressed = 0;
 
+    int switcher = 0;
+
     Clock clock;
     Clock clock2;
     Time t1;
@@ -59,12 +61,13 @@ int main(){
     
     Animate map_state(&mapa,"res\\Maps\\mk_RockMountains\\",8,100,300);
     mapa.update_map_model(map_state.get_sprite());
-    mapa.update_map_sprite_cord(igrac.get_pl_position_x(),igrac.get_pl_position_y());
+    mapa.update_map_sprite_cord(igrac.get_pl_position_x(),igrac.get_pl_position_y(),igrac2.get_pl_position_x(),igrac2.get_pl_position_y());
     Animate pl_state_idle(&igrac,"res\\EvilWizard\\idle.png",8,107,68);
     Animate pl_state_run(&igrac,"res\\EvilWizard\\Run.png",8,107,68);
     Animate pl_state_jump(&igrac,"res\\EvilWizard\\Jump.png",2,90,70);
     Animate pl_state_fall(&igrac,"res\\EvilWizard\\Fall.png",2,90,70);
     Animate pl_state_attack(&igrac,"res\\EvilWizard\\Attack1.png",8,107,68);
+    Animate pl_state_attack2(&igrac,"res\\EvilWizard\\Attack2.png",8,107,68);
     igrac2.change_pl_y();
     Animate pl_state_idle2(&igrac2,"res\\EvilWizard\\idle.png",8,107,68);
     Animate pl_state_run2(&igrac2,"res\\EvilWizard\\Run.png",8,107,68);
@@ -79,10 +82,11 @@ fps_counter.setFont(font);
     //aa
    ContextSettings settings;
     settings.antialiasingLevel = 8;
+    
 
     //stvaranje glavnog prozora
     RenderWindow window(VideoMode(scr_width, scr_height), "Ratko Mladic Kombat!");
-
+    window.setKeyRepeatEnabled(false);
 
 while (window.isOpen()){
         //hvatac desavanja
@@ -113,7 +117,19 @@ while (window.isOpen()){
 
     }
     if(attack){
+       // cout<<"pl_state_attack.get_pl_model_numeration() = "<<pl_state_attack.get_pl_model_numeration()<<endl;
+        if((pl_state_attack.get_pl_model_numeration() == 7) && (switcher == 0)){
+            attack = false;
+            switcher = 1;
+        }
+        else if((pl_state_attack2.get_pl_model_numeration() == 7) && (switcher == 1)){
+            attack = false;
+            switcher = 0;
+        }
+        if(!switcher)
     igrac.update_pl_model(pl_state_attack.get_sprite());
+    else if(switcher)
+    igrac.update_pl_model(pl_state_attack2.get_sprite());
     }
     //sprite_buffer ZA RELOAD!!!
    clock.restart();
@@ -157,7 +173,7 @@ while (window.pollEvent(event))
        // cout<<map_state.get_map_sec_name()<<endl;
         clock2.restart();
         }
-        mapa.update_map_sprite_cord(igrac.get_pl_position_x(),igrac.get_pl_position_y());
+        mapa.update_map_sprite_cord(igrac.get_pl_position_x(),igrac.get_pl_position_y(),igrac2.get_pl_position_x(),igrac2.get_pl_position_y());
        if(!isPressed)
         igrac.jump(jump_trigger);
 
@@ -167,7 +183,7 @@ while (window.pollEvent(event))
         //cout<<igrac.get_pl_position_x()<<" "<<igrac2.get_pl_position_x()<<endl;
         window.draw(mapa.get_map_model());
         window.draw(igrac.get_pl_model());
-        //window.draw(igrac2.get_pl_model());
+        window.draw(igrac2.get_pl_model());
         window.draw(fps_counter);
        
         window.display();

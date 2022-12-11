@@ -24,6 +24,7 @@ void Animate::load_texture(Player *igrac,int model_buffer_size,int x_pos, int y_
     int x = x_pos;
     int y = y_pos;
     for(int i = 0; i<n; i++){
+        temp->pl_model_numeration = i;
        temp->model->setTexture(*texture);
        temp->model->setTextureRect(IntRect(x,y,igrac->get_pl_width(),igrac->get_pl_height()));
        temp->model->setScale(model_size,model_size);
@@ -121,6 +122,9 @@ Sprite *Animate::get_master_sprite(){
     return master_head->model;
 }
 
+int Animate::get_pl_model_numeration(){
+    return head->pl_model_numeration;
+}
 
 Animate::Animate(Player* igrac,string model_status,int model_buffer_size,int x_pos, int y_pos){
 

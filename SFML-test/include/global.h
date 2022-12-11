@@ -14,6 +14,12 @@ extern bool jump;
 extern bool fall;
 extern bool attack;
 extern bool inAir;
+
+extern int origin_map_width;
+extern int origin_map_height;
+
 //extern double pl_speed;
 
 void decl(int w,int h);
+
+

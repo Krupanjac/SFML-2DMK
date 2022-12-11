@@ -10,12 +10,29 @@ void Maps::update_map_model(Sprite *m_model) {
     
 }
 
-void Maps::update_map_sprite_cord(int pl_move_x,int pl_move_y) {
+void Maps::update_map_sprite_cord(int pl_move_x,int pl_move_y,int pl2_move_x,int pl2_move_y) {
+  //  if(pl_move_x<=scr_width-pl_def_width){
+        //cout<<"x: "<<pl_move_x<<" y: "<<pl_move_y<<"scr width: "<<scr_width<<"scr height: "<<scr_height<<endl;
     x = pl_move_x;
-    y = pl_move_y;
-    this->map_model->setTextureRect(IntRect(x,y,this->get_map_width(),this->get_map_height()));
+    y = pl_move_y+incr;
+    this->map_model->setTextureRect(IntRect(x,scr_height/1.5,this->get_map_width(),this->get_map_height()));
     this->map_model->setScale(this->map_scale_w,this->map_scale_h);
+   // }
+   /* else{
+        cout<<"over bounds: "<<over_bounds_x<<"incr: "<<incr_def<<endl;
+        if(over_bounds_x <= 0){
+            over_bounds_x = x;
+        }
+        if(abs(pl2_move_x-pl_move_x) < (scr_width/2)){
+            over_bounds_x += 0.1;
+            x-=0.1;
+        }
+        this->map_model->setTextureRect(IntRect(over_bounds_x,y,this->get_map_width(),this->get_map_height()));
+        this->map_model->setScale(this->map_scale_w,this->map_scale_h);
+    }*/
+
 }
+
 
 Sprite& Maps::get_map_model() const {
      auto temp = this->map_model;
@@ -37,8 +54,10 @@ Maps::Maps(double m_width, double m_height,int c_pl_x,int c_pl_y) {
     this->map_width = m_width;
     this->map_height = m_height;
 
-    this->map_scale_w = 1.3;
-    this->map_scale_h = 1.3;
+    this->map_scale_w = 1.2;
+    this->map_scale_h = 1.2;
+
+    over_bounds_x = 0;
 }
 
 void Maps::pl_move_x(int new_pl_x) {
@@ -93,7 +112,7 @@ void Maps::pl_jump_acc() {
 }
 
 void Maps::pl_jump_fall() {
-    if(map_scale_w<1.3 && map_scale_h<1.3){
+    if(map_scale_w<1.2 && map_scale_h<1.2){
     map_scale_w +=incr;
     map_scale_h +=incr;
     if(incr>incr_def)

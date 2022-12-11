@@ -26,3 +26,6 @@ void decl(int w,int h){
     scr_height = h;
 
 }
+
+int origin_map_width = 3200;
+int origin_map_height = 1344;

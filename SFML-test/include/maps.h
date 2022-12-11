@@ -13,7 +13,7 @@ public:
 Sprite* map_model;
 
 void update_map_model(Sprite*);
-void update_map_sprite_cord(int,int);
+void update_map_sprite_cord(int,int,int,int);
 
 Sprite& get_map_model() const;
 
@@ -46,9 +46,10 @@ int igrac_height = 50;
 int pl_x;
 int pl_y;
 
-int x;
-int y;
+double x;
+double y;
 
+double over_bounds_x;
 
 double incr_def = 0.0001;
 double incr = 0.0001;
