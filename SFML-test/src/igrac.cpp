@@ -199,7 +199,7 @@ Sprite* Player::pl_position_update(Sprite *r,Player igrac, bool& trigger,bool co
 
  }
 
- if(RIGHT&&(pos_x<=scr_width)){ 
+ if(RIGHT&&(pos_x<=(origin_map_width/1.2)-pl_width)){ 
   
      if(::inAir) pos_x += pl_speed/2;
    else pos_x+=pl_speed;

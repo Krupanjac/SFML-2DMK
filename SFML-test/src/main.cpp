@@ -2,12 +2,15 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
 #include "pl_animation.h"
 #include "Collision.hpp"
 #include "global.h"
+#include "snd.h"
 #include "igrac.h"
 #include "maps.h"
 #include "FPS.h"
+#include "health_bar.h"
 #include "events.h"
 
 using namespace sf;
@@ -72,6 +75,8 @@ int main(){
     Animate pl_state_idle2(&igrac2,"res\\EvilWizard\\idle.png",8,107,68);
     Animate pl_state_run2(&igrac2,"res\\EvilWizard\\Run.png",8,107,68);
     
+   // HealthBar helthbar;
+
     //font
     if (!font.loadFromFile("font\\arial.ttf"))
 {
@@ -82,12 +87,14 @@ fps_counter.setFont(font);
     //aa
    ContextSettings settings;
     settings.antialiasingLevel = 8;
+
+    MusicSFML muzika("res\\audio\\music\\terenac.ogg");
+
     
 
     //stvaranje glavnog prozora
     RenderWindow window(VideoMode(scr_width, scr_height), "Ratko Mladic Kombat!");
     window.setKeyRepeatEnabled(false);
-
 while (window.isOpen()){
         //hvatac desavanja
         Event event;
@@ -149,10 +156,30 @@ while (window.pollEvent(event))
 
 
             //zatvori prozor
-            if (event.type == Event::Closed)
+            if (event.type == Event::Closed){
+               //call destructor for all musicSFML objects
+                muzika.~MusicSFML();
+                
+                //call destructor for all objects
+
+               /* igrac.~PlayerSFML();
+                igrac2.~PlayerSFML();
+                mapa.~MapSFML();
+                */
+
+
                 window.close();
-            if (event.key.code == Keyboard::Escape)
+
+            }
+            if (event.key.code == Keyboard::Escape){
+                muzika.~MusicSFML();
+
+                       /* igrac.~PlayerSFML();
+                igrac2.~PlayerSFML();
+                mapa.~MapSFML();
+                */
                 window.close();
+            }
 
 }   
 
